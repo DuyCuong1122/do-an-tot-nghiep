@@ -10,4 +10,8 @@ class AppRoutes {
   static const Homepage = '/homepage';
   static const AddImage = '/add_image';
   static const DeleteSpec = '/delete_spec';
+  static const DISPLAYALLCAR = '/display_all_car';
+  static const Center = '/center';
+  static const SignIn = '/sign_in';
+  static const SignUp = '/sign_up';
 }

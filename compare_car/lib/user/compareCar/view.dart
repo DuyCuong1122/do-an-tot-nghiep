@@ -46,28 +46,30 @@ class ComparePage extends GetView<CompareController> {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Expanded(
-                          flex: 1,
-                          child: Image.network(
-                            controller.state.cars[0].thumbnail,
-                            width: maxSize / 2.0,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Image.network(
-                              controller.state.cars[1].thumbnail,
-                              width: maxSize / 2.0,
-                              fit: BoxFit.contain),
-                        )
+                        // Expanded(
+                        //   flex: 1,
+                        //   child: Image.network(
+                        //     controller.state.cars[0].thumbnail,
+                        //     width: maxSize / 2.0,
+                        //     fit: BoxFit.contain,
+                        //   ),
+                        // ),
+                        // const SizedBox(
+                        //   width: 5,
+                        // ),
+                        // Expanded(
+                        //   flex: 1,
+                        //   child: Image.network(
+                        //       controller.state.cars[1].thumbnail,
+                        //       width: maxSize / 2.0,
+                        //       fit: BoxFit.contain),
+                        // )
                       ],
                     );
                   } else {
-                    return Container();
+                    return Container(
+                      child: Text("Hello"),
+                    );
                   }
                 }),
                 Obx(() {
@@ -76,6 +78,9 @@ class ComparePage extends GetView<CompareController> {
                         scrollDirection: Axis.horizontal,
                         child: DataTable(
                           columns: const <DataColumn>[
+                            // DataColumn(
+                            //   label: Text('Category'),
+                            // ),
                             DataColumn(
                               label: Text('Car 1'),
                             ),

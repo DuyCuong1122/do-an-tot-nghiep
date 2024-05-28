@@ -1,37 +1,15 @@
 class Car {
-  final String nameCar;
-  final String release;
-  final double price;
-  final String description;
-  final String thumbnail;
-  final String showroom;
-  final String stateCar;
+  String id;
+  String nameCar;
+  String release;
 
-  Car({
-    required this.nameCar,
-    required this.release,
-    required this.price,
-    required this.description,
-    required this.thumbnail,
-    required this.showroom,
-    required this.stateCar,
-  });
+  Car({required this.id, required this.nameCar, required this.release});
 
   factory Car.fromJson(Map<String, dynamic> json) {
     return Car(
-      nameCar: json['nameCar'] != null ? json['nameCar'] as String : '',
-      release: json['release'] != null ? json['release'] as String : 'hehe',
-      price: json['price'] != null ? (json['price'] as num).toDouble() : 0.0,
-      description:
-          json['description'] != null ? json['description'] as String : '',
-      thumbnail: json['thumbnail'] != null ? json['thumbnail'] as String : '',
-      showroom: json['showroom'] != null ? json['showroom'] as String : '',
-      stateCar: json['stateCar'] != null ? json['stateCar'] as String : '',
+      id: json['_id'],
+      nameCar: json['nameCar'],
+      release: json['release'],
     );
-  }
-
-  void printAll() {
-    print('Name: ' + nameCar);
-    print('Image: ' + thumbnail);
   }
 }

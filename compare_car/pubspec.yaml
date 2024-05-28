@@ -40,6 +40,22 @@ dependencies:
   dio: ^5.4.1
   file_picker: ^7.0.2
   image_picker: ^1.0.7
+  easy_debounce: ^2.0.3
+  carousel_slider: ^4.2.1
+  provider: ^6.1.2
+  google_fonts: ^6.2.0
+  sticky_headers: ^0.3.0+2
+  easy_sticky_header: ^1.1.1
+  firebase_auth: ^4.16.0
+  google_sign_in: ^6.1.6
+  cloud_firestore: ^4.14.0
+  dots_indicator: ^3.0.0
+  flutter_screenutil: ^5.9.1
+  cached_network_image: ^3.3.1
+  fluttertoast: ^8.2.5
+  shared_preferences: ^2.2.2
+  package_info: ^2.0.2
+  firebase_core: ^2.24.2
 
 
 dev_dependencies:

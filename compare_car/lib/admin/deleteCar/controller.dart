@@ -24,7 +24,7 @@ class DeleteCarController extends GetxController {
       print('nameCar: $nameCar');
 
       final response =
-          await http.delete(Uri.parse(carURL + "/$nameCar"), headers: {
+          await http.delete(Uri.parse("$carURL/$nameCar"), headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",

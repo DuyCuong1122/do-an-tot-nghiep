@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+import 'common/store/user.dart';
+
+class CenterPage extends StatelessWidget {
+  const CenterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +101,12 @@ class User extends StatelessWidget {
             child: const Text('Compare Car'),
           ),
           ElevatedButton(
-            onPressed: () => Get.toNamed('/detail'),
-            child: const Text('Display Car'),
+            onPressed: () async {
+              String profile = await UserStore.to.getProfile();
+              log(profile);
+              Get.offAndToNamed('/application');
+            },
+            child: const Text('Homepage'),
           ),
         ],
       )),

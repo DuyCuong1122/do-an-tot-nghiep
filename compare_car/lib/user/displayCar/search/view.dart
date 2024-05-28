@@ -40,15 +40,15 @@ class DisplayCarPage extends GetView<DisplayCarController> {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Image.network(
-                            car.thumbnail,
-                            scale: 1.0,
-                            width: double.infinity,
-                            height: 300,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Text('Failed to load image');
-                            },
-                          ),
+                          // Image.network(
+                          //   car.thumbnail,
+                          //   scale: 1.0,
+                          //   width: double.infinity,
+                          //   height: 300,
+                          //   errorBuilder: (context, error, stackTrace) {
+                          //     return Text('Failed to load image');
+                          //   },
+                          // ),
                           Text(car.nameCar),
                         ],
                       ),

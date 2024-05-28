@@ -3,21 +3,26 @@ import 'package:compare_car/admin/addImage/index.dart';
 import 'package:compare_car/admin/addSpec/index.dart';
 import 'package:compare_car/admin/deleteCar/index.dart';
 import 'package:compare_car/admin/deleteSpec/index.dart';
-import 'package:compare_car/homepage.dart';
+import 'package:compare_car/center_page.dart';
+import 'package:compare_car/user/application/index.dart';
 import 'package:compare_car/user/compareCar/index.dart';
 import 'package:compare_car/user/detailCar/index.dart';
+import 'package:compare_car/user/displayCar/index.dart';
 import 'package:get/get.dart';
 
+import '../../sign_in_up/sign_in/index.dart';
+import '../../sign_in_up/sign_up/index.dart';
+import '../../user/home_page/index.dart';
 import 'names.dart';
 
 class AppPages {
   // static const INITIAL = AppRoutes.INITIAL;
   static const APPlication = AppRoutes.Application;
-  static const AddCar = AppRoutes.AddCar;
+  static const SignIn = AppRoutes.SignIn;
+  static const SignUp = AppRoutes.SignUp;
   // static const DeleteCar = AppRoutes.DeleteCar;
   // static const CompareCar = AppRoutes.Compare;
-  static const AddSpec = AppRoutes.AddSpec;
-  static const Homepage = AppRoutes.Homepage;
+  static const Center = AppRoutes.Center;
 
   static final List<GetPage> routes = [
     GetPage(
@@ -40,7 +45,10 @@ class AppPages {
         name: AppRoutes.AddSpec,
         page: () => const AddSpecPage(),
         binding: AddSpecBinding()),
-    GetPage(name: AppPages.Homepage, page: () => const HomePage()),
+    GetPage(
+        name: AppRoutes.Homepage,
+        page: () => const HomePage(),
+        binding: HomeBinding()),
     GetPage(
         name: AppRoutes.AddImage,
         page: () => const AddImagePage(),
@@ -49,5 +57,22 @@ class AppPages {
         name: AppRoutes.DeleteSpec,
         page: () => const DeleteSpecPage(),
         binding: DeleteSpecBinding()),
+    GetPage(
+        name: AppRoutes.DISPLAYALLCAR,
+        page: () => const DisplayCarPage(),
+        binding: DisplayCarBinding()),
+    GetPage(name: AppRoutes.Center, page: () => const CenterPage()),
+    GetPage(
+        name: AppPages.APPlication,
+        page: () => const ApplicationPage(),
+        binding: ApplicationBinding()),
+    GetPage(
+        name: AppPages.SignIn,
+        page: () => const SignInPage(),
+        binding: SignInBinding()),
+    GetPage(
+        name: AppRoutes.SignUp,
+        page: () => SignUpPage(),
+        binding: SignUpBinding())
   ];
 }
