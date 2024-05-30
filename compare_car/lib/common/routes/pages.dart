@@ -39,7 +39,7 @@ class AppPages {
         binding: DeleteCarBinding()),
     GetPage(
         name: AppRoutes.Compare,
-        page: () => const ComparePage(),
+        page: () => ComparePage(),
         binding: CompareBinding()),
     GetPage(
         name: AppRoutes.AddSpec,

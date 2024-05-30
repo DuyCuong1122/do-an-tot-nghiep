@@ -5,33 +5,52 @@ import 'package:get/get.dart';
 class ComparePage extends GetView<CompareController> {
   const ComparePage({super.key});
 
-  List<DataColumn> _createColumns(String category) {
-    return [
-      DataColumn(label: Text(controller.state.carsWithSpecs1[0].car.nameCar)),
-      DataColumn(label: Text(category)),
-      DataColumn(label: Text(controller.state.carsWithSpecs2[0].car.nameCar))
-    ];
-  }
-
-  List<DataRow> _createRows(String category) {
-    return controller.state.carsWithSpecs1[0].specs
-        .where((element) => element.category == category)
-        .map((e) => DataRow(cells: [
-              DataCell(Text(e.specName!)),
-              DataCell(Text(e.value ?? "N/A")),
-              DataCell(Text("hehe"))
-            ]))
-        .toList();
-  }
-
-  DataTable createTable(String category, String spec) {
-    return DataTable(
-        columns: _createColumns(category), rows: _createRows(spec));
-  }
-
   @override
   Widget build(BuildContext context) {
-    final maxSize = MediaQuery.of(context).size.width / 2;
+    List<DataColumn> createColumns(String category) {
+      return [
+        DataColumn(
+            label: Center(
+                child: Text(controller.state.carsWithSpecs1[0].car.nameCar))),
+        DataColumn(label: Center(child: Text(category))),
+        DataColumn(
+            label: Center(
+                child: Text(controller.state.carsWithSpecs2[0].car.nameCar)))
+      ];
+    }
+
+    DataRow createRows(String specName) {
+      final spec1 = controller.state.carsWithSpecs1[0].specs
+          .firstWhereOrNull((element) => element.specName == specName);
+      final spec2 = controller.state.carsWithSpecs2[0].specs
+          .firstWhereOrNull((element) => element.specName == specName);
+      return DataRow(cells: [
+        DataCell(Center(
+            child: Text(spec1 != null && spec1.value != "null"
+                ? (spec1.value.toString() == "Available"
+                    ? "V"
+                    : spec1.value.toString())
+                : "X"))),
+        DataCell(Center(child: Text(specName))),
+        DataCell(Center(
+            child: Text(spec2 != null && spec2.value != "null"
+                ? (spec2.value.toString() == "Available"
+                    ? "V"
+                    : spec2.value.toString())
+                : "X"))),
+      ]);
+    }
+
+    DataTable createTable(String category, List<DataRow> spec) {
+      return DataTable(
+        columns: createColumns(category),
+        rows: spec,
+        border:
+            TableBorder.all(width: 1, borderRadius: BorderRadius.circular(8)),
+      );
+    }
+
+    final maxSize = MediaQuery.of(context).size.width;
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -94,26 +113,29 @@ class ComparePage extends GetView<CompareController> {
                       return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: controller.state.commonCategories
                                 .expand((category) {
                               final commonSpecNames = controller
                                   .state.car1SpecsByCategory[category]!
                                   .intersection(controller
                                       .state.car2SpecsByCategory[category]!);
-                              return commonSpecNames.map((specName) {
-                                return createTable(category, specName);
-                              }).toList();
+                              return [
+                                SizedBox(
+                                  width: maxSize - 30,
+                                  child: createTable(
+                                      category,
+                                      commonSpecNames
+                                          .map((specName) =>
+                                              createRows(specName))
+                                          .toList()),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                )
+                              ];
                             }).toList(),
-
-                            //                     for (var category
-                            //                         in controller.state.commonCategories)
-                            //                    {
-                            //                     Set<String> commonSpecNames = controller.state.car1SpecsByCategory[category]!
-                            //     .intersection(state.car2SpecsByCategory[category]!);
-                            // for (var specName in commonSpecNames)
-                            //   createTable(category, specName)
-                            //               }
-                            //             ],
                           ));
                     } else {
                       return const Text(
@@ -122,14 +144,7 @@ class ComparePage extends GetView<CompareController> {
                       );
                     }
                   }),
-                ]
-
-                // else {
-                //   return Container(
-                //     child: Text("dm"),
-                //   );
-
-                ),
+                ]),
           ),
         ),
       ),

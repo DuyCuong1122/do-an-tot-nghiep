@@ -82,17 +82,17 @@ class CompareController extends GetxController {
             .toSet()
             .intersection(state.car2SpecsByCategory.keys.toSet());
 
-        for (var category in state.commonCategories) {
-          int count = 0;
-          print('Category: $category');
-          Set<String> commonSpecNames = state.car1SpecsByCategory[category]!
-              .intersection(state.car2SpecsByCategory[category]!);
-          for (var specName in commonSpecNames) {
-            print('  SpecName: $specName');
-            count++;
-          }
-          print(count);
-        }
+        // for (var category in state.commonCategories) {
+        //   int count = 0;
+        //   print('Category: $category');
+        //   Set<String> commonSpecNames = state.car1SpecsByCategory[category]!
+        //       .intersection(state.car2SpecsByCategory[category]!);
+        //   for (var specName in commonSpecNames) {
+        //     print('  SpecName: $specName');
+        //     count++;
+        //   }
+        //   print(count);
+        // }
 
         // for (var carWithSpecs in state.carsWithSpecs2) {
         //   log('Car: ${carWithSpecs.car.nameCar}, Release Year: ${carWithSpecs.car.release}');
