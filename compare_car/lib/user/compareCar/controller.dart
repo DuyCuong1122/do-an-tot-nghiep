@@ -15,9 +15,21 @@ class CompareController extends GetxController {
   final TextEditingController car1Controller = TextEditingController();
   final TextEditingController car2Controller = TextEditingController();
   Map<dynamic, dynamic> tmp = <dynamic, dynamic>{};
+  // List<Comparison> comparisons = [];
   @override
   void onInit() {
     super.onInit();
+  }
+
+  Map<String, Set<String>> getSpecNamesByCategory(List<Spec> specs) {
+    Map<String, Set<String>> specNamesByCategory = {};
+    for (var spec in specs) {
+      if (!specNamesByCategory.containsKey(spec.category)) {
+        specNamesByCategory[spec.category!] = {};
+      }
+      specNamesByCategory[spec.category]!.add(spec.specName!);
+    }
+    return specNamesByCategory;
   }
 
   Future<void> getInfo2Cars() async {
@@ -38,26 +50,90 @@ class CompareController extends GetxController {
 
       if (response.statusCode == 200) {
         List<dynamic> parsedJson = jsonDecode(response.body);
-        List<Comparison> comparisons =
-            parsedJson.map((json) => Comparison.fromJson(json)).toList();
+        // comparisons =
+        //     parsedJson.map((json) => Comparison.fromJson(json)).toList();
+        state.carsWithSpecs1 = parsedJson.map((data) {
+          return CarWithSpecs.fromJson(data, 'car1', 'specs1');
+        }).toList();
+
+        state.carsWithSpecs2 = parsedJson.map((data) {
+          return CarWithSpecs.fromJson(data, 'car2', 'specs2');
+        }).toList();
+
+        List<CarWithSpecs> carsWithSpecs = [
+          state.carsWithSpecs1[0],
+          state.carsWithSpecs2[0]
+        ];
+
+        // for (var carWithSpecs in carsWithSpecs1) {
+        //   log('Car: ${carWithSpecs.car.nameCar}, Release Year: ${carWithSpecs.car.release}');
+        //   for (var spec in carWithSpecs.specs) {
+        //     print('  ${spec.category} - ${spec.specName}: ${spec.value}');
+        //   }
+        // }
+        // Lấy các specName theo category cho từng xe
+        state.car1SpecsByCategory =
+            getSpecNamesByCategory(carsWithSpecs[0].specs);
+        state.car2SpecsByCategory =
+            getSpecNamesByCategory(carsWithSpecs[1].specs);
+
+        // Tìm các category chung và in ra các specName của chúng
+        state.commonCategories = state.car1SpecsByCategory.keys
+            .toSet()
+            .intersection(state.car2SpecsByCategory.keys.toSet());
+
+        for (var category in state.commonCategories) {
+          int count = 0;
+          print('Category: $category');
+          Set<String> commonSpecNames = state.car1SpecsByCategory[category]!
+              .intersection(state.car2SpecsByCategory[category]!);
+          for (var specName in commonSpecNames) {
+            print('  SpecName: $specName');
+            count++;
+          }
+          print(count);
+        }
+
+        // for (var carWithSpecs in state.carsWithSpecs2) {
+        //   log('Car: ${carWithSpecs.car.nameCar}, Release Year: ${carWithSpecs.car.release}');
+
+        //   // for (var spec in carWithSpecs.specs) {
+        //   //   print('  ${spec.category} - ${spec.specName}: ${spec.value}');
+        //   // }
+        //   carWithSpecs.specs
+        //       .where((element) =>
+        //           element.category == 'Dimensions, Weights & Capacities')
+        //       .forEach((element) {
+        //     print(
+        //         '  ${element.category} - ${element.specName}: ${element.value}');
+        //   });
+        // }
 
         // Print out the comparisons for verification
-        comparisons.forEach((comparison) {
-          comparison.specs1.forEach((spec) {
-            tmp[spec.specName] = spec.category;
-          });
-          comparison.specs2.forEach((spec) {
-            tmp[spec.specName] = spec.category;
-          });
-        });
-        tmp.forEach((key, value) {
-          log('key: $key, value: $value');
-          log('------------------');
-          state.specs[value] = key;
-        });
-        state.specs.forEach((key, value) {
-          log('key: $key, value: $value');
-        });
+        // comparisons.forEach((comparison) {
+        //   print(comparison.car1);
+        //   comparison.specs1.forEach((spec) {
+        //     log(spec.toString());
+        //   });
+        //   print(comparison.car2);
+        //   comparison.specs2.forEach((spec) {
+        //     tmp[spec.specName] = spec.category;
+        //   });
+        //   Car car1 = comparisons[0].car1;
+        //   Car car2 = comparisons[0].car2;
+        //   log('car1: ${car1.nameCar}');
+        //   log('car2: ${car2.nameCar}');
+
+        //   // state.cars.forEach((element) {
+        //   //   log(element.nameCar);
+        //   //   log(element.release);
+        //   // });
+        // });
+        // tmp.forEach((key, value) {
+        //   log('key: $key, value: $value');
+        //   log('------------------');
+        //   // state.cars[key] = value;
+        // });
         Get.snackbar(
           'Success',
           'Car found successfully!',

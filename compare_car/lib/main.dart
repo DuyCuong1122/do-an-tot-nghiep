@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              initialRoute: AppPages.SignIn,
+              initialRoute: AppPages.Center,
               getPages: AppPages.routes,
             ));
   }

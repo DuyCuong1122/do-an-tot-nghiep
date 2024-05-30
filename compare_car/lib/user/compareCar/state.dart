@@ -1,6 +1,11 @@
 import 'package:get/get.dart';
 
+import '../../common/entities/comparison.dart';
+
 class CompareState {
-  RxMap<dynamic, dynamic> cars = RxMap<dynamic, dynamic>();
-  RxMap<dynamic, dynamic> specs = RxMap<dynamic, dynamic>();
+  List<CarWithSpecs> carsWithSpecs1 = <CarWithSpecs>[].obs;
+  List<CarWithSpecs> carsWithSpecs2 = <CarWithSpecs>[].obs;
+  Set<String> commonCategories = <String>{};
+  Map<String, Set<String>> car1SpecsByCategory = <String, Set<String>>{}.obs;
+  Map<String, Set<String>> car2SpecsByCategory = <String, Set<String>>{}.obs;
 }
