@@ -40,6 +40,10 @@ class SignUpPage extends GetView<SignUpController> {
               },
               child: Text('Sign Up'),
             ),
+            GestureDetector(
+              onTap: () => Get.toNamed("/sign_in"),
+              child: Text('Already have an account? Sign in'),
+            )
           ],
         ),
       ),

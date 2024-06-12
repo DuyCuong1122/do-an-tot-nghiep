@@ -1,18 +1,19 @@
-import 'package:compare_car/admin/addCar/index.dart';
-import 'package:compare_car/admin/addImage/index.dart';
-import 'package:compare_car/admin/addSpec/index.dart';
-import 'package:compare_car/admin/deleteCar/index.dart';
-import 'package:compare_car/admin/deleteSpec/index.dart';
-import 'package:compare_car/center_page.dart';
-import 'package:compare_car/user/application/index.dart';
-import 'package:compare_car/user/compareCar/index.dart';
-import 'package:compare_car/user/detailCar/index.dart';
-import 'package:compare_car/user/displayCar/index.dart';
 import 'package:get/get.dart';
 
+import '../../admin_user/admin/addCar/index.dart';
+import '../../admin_user/admin/addImage/index.dart';
+import '../../admin_user/admin/addSpec/index.dart';
+import '../../admin_user/admin/deleteCar/index.dart';
+import '../../admin_user/admin/deleteSpec/index.dart';
+import '../../admin_user/profile/index.dart';
+import '../../admin_user/user/application/index.dart';
+import '../../admin_user/user/compareCar/index.dart';
+import '../../admin_user/user/detailCar/index.dart';
+import '../../admin_user/user/displayCar/index.dart';
+import '../../admin_user/user/home_page/index.dart';
+import '../../center_page.dart';
 import '../../sign_in_up/sign_in/index.dart';
 import '../../sign_in_up/sign_up/index.dart';
-import '../../user/home_page/index.dart';
 import 'names.dart';
 
 class AppPages {
@@ -39,7 +40,7 @@ class AppPages {
         binding: DeleteCarBinding()),
     GetPage(
         name: AppRoutes.Compare,
-        page: () => ComparePage(),
+        page: () => const ComparePage(),
         binding: CompareBinding()),
     GetPage(
         name: AppRoutes.AddSpec,
@@ -73,6 +74,10 @@ class AppPages {
     GetPage(
         name: AppRoutes.SignUp,
         page: () => SignUpPage(),
-        binding: SignUpBinding())
+        binding: SignUpBinding()),
+    GetPage(
+        name: AppRoutes.Profile,
+        page: () => ProfilePage(),
+        binding: ProfileBinding())
   ];
 }

@@ -11,7 +11,9 @@ const User = mongoose.model(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Roles"
       }
-    ]
+    ],
+    googleId : String,
+    displayName: {type: String, default: 'N'},
   },{versionKey: false, timestamps: true},)
 );
 

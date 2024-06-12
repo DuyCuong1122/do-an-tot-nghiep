@@ -14,6 +14,7 @@ Future<void> main() async {
   await Get.putAsync<StorageService>(() => StorageService().init());
   Get.put<ConfigStore>(ConfigStore());
   Get.put<UserStore>(UserStore());
+  Get.put<UserDBStore>(UserDBStore());
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              initialRoute: AppPages.Center,
+              initialRoute: AppPages.SignIn,
               getPages: AppPages.routes,
             ));
   }

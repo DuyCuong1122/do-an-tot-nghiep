@@ -14,4 +14,6 @@ class AppRoutes {
   static const Center = '/center';
   static const SignIn = '/sign_in';
   static const SignUp = '/sign_up';
+  static const SignInUp = '/sign_in_up';
+  static const Profile = '/profile';
 }

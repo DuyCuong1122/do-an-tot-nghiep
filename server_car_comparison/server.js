@@ -12,7 +12,7 @@ app.use(function (req, res, next) {
     next();
   });
 db.connect();
-
+db.initial();
 route(app);
 
 app.listen(PORT, () => {

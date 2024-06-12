@@ -1,5 +1,49 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+class UserDB {
+  final String? id;
+  final String? username;
+  final String? email;
+  final List<String>? roles;
+  final String? access_token;
+  final String? displayName;
+
+  UserDB({
+    this.id,
+    this.username,
+    this.email,
+    this.roles,
+    this.access_token,
+    this.displayName,
+  });
+
+  factory UserDB.fromJson(Map<String, dynamic> json) {
+    var streetsFromJson = json['roles'];
+    List<String> roles =
+        streetsFromJson != null ? List<String>.from(streetsFromJson) : [];
+
+    return UserDB(
+      id: json["id"],
+      username: json["username"],
+      email: json["email"],
+      roles: roles,
+      access_token: json["access_token"],
+      displayName: json["displayName"],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'username': username,
+      'email': email,
+      'roles': roles,
+      'access_token': access_token,
+      'displayName': displayName,
+    };
+  }
+}
+
 class UserData {
   final String? id;
   final String? username;
@@ -55,7 +99,8 @@ class UserLoginResponseEntity {
         accessToken: json["access_token"],
         displayName: json["display_name"],
         email: json["email"],
-        photoUrl: json["photoUrl"],
+        photoUrl: json["photoUrl"] ??
+            "https://d1hjkbq40fs2x4.cloudfront.net/2016-01-31/files/1045.jpg",
       );
 
   Map<String, dynamic> toJson() => {
@@ -64,25 +109,8 @@ class UserLoginResponseEntity {
         "email": email,
         "photoUrl": photoUrl,
       };
-}
-
-class MeListItem {
-  String? name;
-  String? icon;
-  String? explain;
-  String? route;
-
-  MeListItem({
-    this.name,
-    this.icon,
-    this.explain,
-    this.route,
-  });
-
-  factory MeListItem.fromJson(Map<String, dynamic> json) => MeListItem(
-        name: json["name"],
-        icon: json["icon"],
-        explain: json["explain"],
-        route: json["route"],
-      );
+  printALl() {
+    print(
+        'accessToken: $accessToken, displayName: $displayName, email: $email, photoUrl: $photoUrl');
+  }
 }

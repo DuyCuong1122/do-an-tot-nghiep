@@ -10,9 +10,6 @@ class SignUpController extends GetxController {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-
-
-
   void signUp() async {
     String email = emailController.text;
     String username = usernameController.text;
@@ -43,7 +40,7 @@ class SignUpController extends GetxController {
           'Sign-up successful!',
           snackPosition: SnackPosition.BOTTOM,
         );
-        Get.offAndToNamed('/center');
+        Get.offAndToNamed('/sign_in');
       } else {
         Get.snackbar(
           'error',

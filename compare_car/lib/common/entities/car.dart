@@ -12,4 +12,8 @@ class Car {
       release: json['release'],
     );
   }
+
+  void printAll() {
+    print('id: $id, nameCar: $nameCar, release: $release');
+  }
 }

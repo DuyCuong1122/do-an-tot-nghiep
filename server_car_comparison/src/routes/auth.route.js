@@ -14,9 +14,8 @@ router.post(
     controller.signup
 );
 
-router.post("/",(req, res) => res.send('Hello World')) 
-
 // Route for user signin
+router.post("/signinGmail", controller.signinWithGoogle);
 router.post("/signin", controller.signin);
 
 module.exports = router;

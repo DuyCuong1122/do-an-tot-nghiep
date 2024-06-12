@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../common/config/config.dart';
 import '../../common/entities/user.dart';
 import '../../common/routes/names.dart';
 import 'index.dart';
@@ -24,7 +25,20 @@ class SignInController extends GetxController {
   final passwordController = TextEditingController();
 
   final db = FirebaseFirestore.instance;
-  Future<void> handleSignIn() async {
+
+  String getEmailUsername(String email) {
+    // Tìm vị trí của ký tự '@'
+    int atIndex = email.indexOf('@');
+    if (atIndex != -1) {
+      // Trích xuất phần tên từ đầu đến ký tự '@'
+      return email.substring(0, atIndex);
+    } else {
+      // Nếu không tìm thấy ký tự '@', trả về toàn bộ địa chỉ email
+      return email;
+    }
+  }
+
+  Future<void> handleSignInGoogle() async {
     try {
       var user = await googleSignIn.signIn();
       if (user != null) {
@@ -40,6 +54,7 @@ class SignInController extends GetxController {
         String email = user.email;
         String id = user.id;
         String photoUrl = user.photoUrl ?? "";
+
         UserLoginResponseEntity userProfile = UserLoginResponseEntity();
         userProfile.email = email;
         userProfile.accessToken = id;
@@ -49,41 +64,69 @@ class SignInController extends GetxController {
         UserStore.to.saveProfile(userProfile);
         String profile = await UserStore.to.getProfile();
         log(profile);
-        // var userbase = await db // nếu có thì lấy ra id
-        //     .collection("users")
-        //     .withConverter(
-        //         fromFirestore: UserData.fromFirestore,
-        //         toFirestore: (UserData userdata, options) =>
-        //             userdata.toFirestore())
-        //     .where("id", isEqualTo: id)
-        //     .get();
-        // if (userbase.docs.isEmpty) {
-        //   // check rỗng, nếu không có thì thêm vào database
-        //   final data = UserData(
-        //       id: id,
-        //       name: displayName,
-        //       email: email,
-        //       photourl: photoUrl,
-        //       location: "",
-        //       fcmtoken: "",
-        //       addtime: Timestamp.now());
-        //   await db
-        //       .collection("users")
-        //       .withConverter(
-        //           fromFirestore: UserData.fromFirestore,
-        //           toFirestore: (UserData userdata, options) =>
-        //               userdata.toFirestore())
-        //       .add(data);
-        // }
-        // toastInfo(msg: "Login success");
         log("success fully");
-        Get.offAndToNamed(AppRoutes.Center);
+        // Get.offAndToNamed(AppRoutes.Center);
       } else {
         log("Google Sign-In was canceled.");
       }
     } catch (e) {
       print("Sign-In Error: $e");
       toastInfo(msg: "Login error");
+    }
+  }
+
+  Future<void> handleSignInDB() async {
+    String username = usernameController.text;
+    String password = passwordController.text;
+
+    const url = sign_in;
+
+    print(url);
+    try {
+      final response =
+          await http.post(Uri.parse(Uri.encodeFull(url)), headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
+      }, body: {
+        "username": username,
+        "password": password,
+      });
+
+      if (response.statusCode == 200) {
+        // Print out the comparisons for verification
+
+        final datajson = jsonDecode(response.body);
+        UserDB user = UserDB.fromJson(datajson);
+        UserDB profile = UserDB(
+            email: user.email,
+            displayName: user.displayName,
+            access_token: user.access_token,
+            id: user.id);
+
+        UserDBStore.to.saveProfile(profile);
+
+        String profile1 = await UserDBStore.to.getProfile();
+
+        print(profile1 + " hehehe");
+        Get.snackbar(
+          'Sign in',
+          'Sign-in successful!',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+        );
+        Get.offAndToNamed('/center');
+      } else {
+        Get.snackbar(
+          'error',
+          'Failed to in ',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+        );
+        throw Exception('Failed to Sign-in ');
+      }
+    } catch (e) {
+      log("error: $e");
     }
   }
 

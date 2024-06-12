@@ -1,8 +1,8 @@
 // Đây là nơi chứa các hàm xử lý logic của các API liên quan đến việc quản lý thông tin của xe
 const db = require('../models');
-const {Car} = db.car;
-const {Spec} = db.spec;
-const {Image} = db.image;
+const { Car } = db.car;
+const { Spec } = db.spec;
+const { Image } = db.image;
 
 class CarController {
   getAllCars(req, res, next) {
@@ -78,7 +78,7 @@ class CarController {
       res.status(404).json({ message: 'Car not found' });
     }
   }
-
+  year
   async deleteCar(req, res) {
     try {
       const name = req.params.name;
@@ -104,20 +104,27 @@ class CarController {
   }
 
   async compareCar(req, res) {
-
+    const nameCar1 = req.query.car1;
+    const nameCar2 = req.query.car2;
+    console.log(nameCar1, '\n', nameCar2);
     // Tìm thông tin của 2 xe
     try {
-      const nameCar1 = req.query.car1;
-      const nameCar2 = req.query.car2;
+
+
       const car1 = await Car.findOne({ nameCar: nameCar1 });
       const car2 = await Car.findOne({ nameCar: nameCar2 });
-      console.log(nameCar1, nameCar2);
+
 
       if (!car1 || !car2) {
         return res.status(404).json({ message: 'Car not found' });
       }
 
-      res.json([car1, car2]);
+      const specs1 = await Spec.find({ idCar: car1._id });
+      const specs2 = await Spec.find({ idCar: car2._id });
+      // const images1 = await Image.find({ idCar: car1._id });
+      // const images2 = await Image.find({ idCar: car1._id });
+
+      res.json([{ car1, specs1, car2, specs2 }]);
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Server error' });
@@ -153,6 +160,28 @@ class CarController {
 
   async updateSpec(req, res, next) {
 
+  }
+
+  async getCarByYear(req, res, next) {
+    const year = parseInt(req.params.year);
+    console.log(year);
+    try {
+
+
+      // Tìm kiếm xe trong cơ sở dữ liệu
+      var cars = Car.find({ release: year });
+      if (!cars) {
+        // Trả về phản hồi 404 nếu không tìm thấy xe
+        return res.status(404).json({ message: 'Car not found' });
+      }
+
+      // Trả về thông tin của xe nếu tìm thấy
+      // res.status(200).send(cars);
+    } catch (err) {
+      // Xử lý lỗi nếu có
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+    }
   }
 
   async deleteSpec(req, res, next) {
@@ -214,6 +243,19 @@ class CarController {
       console.error(error);
       res.status(500).send('Can not upload file');
     }
+  }
+
+  async searchCar(req, res, next) {
+    const searchTerm = req.query.nameCar; // Lấy tham số 'search' từ query string
+    if (!searchTerm) {
+      return res.status(400).send('Search query parameter is required');
+    }
+
+    // Tìm kiếm xe trong cơ sở dữ liệu
+    const regex = new RegExp(searchTerm, 'i'); // 'i' để không phân biệt chữ hoa chữ thường
+    Car.find({ nameCar: { $regex: regex } })
+      .then(cars => res.json(cars))
+      .catch(err => { console.error(err); next(err) });
   }
 }
 

@@ -17,13 +17,13 @@ class SignInPage extends GetView<SignInController> {
     Widget _buildLogo() {
       return Container(
         width: 110,
-        margin: EdgeInsets.only(top: 84),
+        margin: const EdgeInsets.only(top: 84),
         child: Column(
           children: [
             Container(
               width: 76,
               height: 76,
-              margin: EdgeInsets.symmetric(horizontal: 15),
+              margin: const EdgeInsets.symmetric(horizontal: 15),
               child: Stack(
                 children: [
                   Positioned(
@@ -34,19 +34,12 @@ class SignInPage extends GetView<SignInController> {
                         boxShadow: [Shadows.primaryShadow],
                         borderRadius: BorderRadius.all(Radius.circular(35))),
                   )),
-                  // Positioned(
-                  //     child: Image.asset(
-                  //   "assets/images/ic_launcher.png",
-                  //   width: 76,
-                  //   height: 76,
-                  //   fit: BoxFit.cover,
-                  // ))
                 ],
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 15, bottom: 15),
-              child: Text(
+              margin: const EdgeInsets.only(top: 15, bottom: 15),
+              child: const Text(
                 "Let's chat",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -64,16 +57,16 @@ class SignInPage extends GetView<SignInController> {
         // margin: EdgeInsets.only(bottom: 280),
         child: Column(
           children: [
-            Text("Sign in with social networks",
+            const Text("Sign in with social networks",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.primaryText,
                   fontSize: 16,
                 )),
             Padding(
-              padding: EdgeInsets.only(top: 30, left: 50, right: 50),
+              padding: const EdgeInsets.only(top: 30, left: 50, right: 50),
               child: btnFlatButtonWidget(
-                  onPressed: () => controller.handleSignIn(),
+                  onPressed: () => controller.handleSignInGoogle(),
                   width: 200,
                   height: 55,
                   title: "Google Login"),
@@ -83,30 +76,55 @@ class SignInPage extends GetView<SignInController> {
       );
     }
 
+    Widget returnSignUpPage() {
+      return GestureDetector(
+        onTap: () => Get.offAndToNamed("/sign_up"),
+        child: const Text('Don\'t have an account? Sign up'),
+      );
+    }
+
     Widget buildFormSignIn() {
       return Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(children: [
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
             TextField(
               controller: controller.usernameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Username',
               ),
             ),
             TextField(
               controller: controller.passwordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Password',
               ),
               obscureText: true,
             ),
-          ]));
+            Center(
+              child: ElevatedButton(
+                child: const Text("Sign in"),
+                onPressed: () => controller.handleSignInDB(),
+              ),
+            )
+          ],
+        ),
+      );
     }
 
     return Scaffold(
         body: Center(
       child: Column(
-        children: [_buildLogo(), const Spacer(), _buildThirdPartyLogin()],
+        children: [
+          _buildLogo(),
+          buildFormSignIn(),
+          const Spacer(),
+          _buildThirdPartyLogin(),
+          returnSignUpPage(),
+          const SizedBox(
+            height: 15,
+          )
+        ],
       ),
     ));
   }

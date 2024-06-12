@@ -26,12 +26,31 @@ exports.signup = async (req, res) => {
       await user.save();
     }
 
-    res.send({ message: "User was registered successfully!" });
+    res.status(201).send({ message: "User was registered successfully!" });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: err.message || "An error occurred while registering the user." });
   }
 };
+
+exports.saveInfoGmail = async (req, res) => {
+  try {
+    const user = new User({
+      username: req.body.username,
+      email: req.body.email,
+
+    });
+    const defaultRole = await Role.findOne({ name: "user" });
+    user.roles = defaultRole._id;
+    await user.save();
+
+
+    res.status(201).send({ message: "User was registered successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: err.message || "An error occurred while registering the user." });
+  }
+}
 
 exports.signin = async (req, res) => {
   try {
@@ -60,10 +79,33 @@ exports.signin = async (req, res) => {
       username: user.username,
       email: user.email,
       roles: authorities,
-      accessToken: token
+      access_token: token,
+      displayName: user.displayName,
     });
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: err.message || "An error occurred while signing in." });
   }
 };
+
+exports.signinWithGoogle = async (req, res) => {
+  try {
+    const { email, googleId } = req.body;
+    let user = await User.findOne({ googleId });
+    if (!user) {
+      user = new User({ email, googleId });
+      const defaultRole = await Role.findOne({ name: "user" });
+      user.roles = [defaultRole._id];
+      await user.save();
+    }
+    const token = jwt.sign({ id: user.id }, config.secret, {
+      algorithm: 'HS256',
+      allowInsecureKeySizes: true,
+      expiresIn: 86400, // 24 hours
+    });
+    res.status(200).send({ token });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: err.message || "An error occurred while signing in." });
+  }
+}

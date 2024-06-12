@@ -108,6 +108,18 @@ class User extends StatelessWidget {
             },
             child: const Text('Homepage'),
           ),
+          ElevatedButton(
+            child: const Text("Log out"),
+            onPressed: () {
+              // UserStore.to.logout();
+
+              Get.offAndToNamed('/sign_in');
+            },
+          ),
+          ElevatedButton(
+            child: const Text('Profile'),
+            onPressed: () => Get.offAndToNamed('/profile'),
+          )
         ],
       )),
     );

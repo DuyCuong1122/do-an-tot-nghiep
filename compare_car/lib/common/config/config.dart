@@ -11,5 +11,9 @@ const carURL = '${url}car';
 const imageURL = '${url}image';
 const specURL = '${url}spec';
 const searchCarURL = '${url}search?nameCar=';
-
+const allPostURL = '${url}posts';
 const compareCarURL = '${url}compare';
+const postURL = '${url}post';
+const likeURL = '${url}like';
+const checkLikeURL = '${url}checkLike';
+const commentURL = '${url}comment';
